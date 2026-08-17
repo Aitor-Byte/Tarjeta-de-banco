@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjeta de banco</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Ingrese número de tarjeta</h1>
+    
+    <!-- Agregamos id="numeroTarjeta" para leerlo desde JS -->
+    <input type="text" id="numeroTarjeta" placeholder="Ej: 4500 1234...">
+    
+    <!-- Agregamos onclick para ejecutar la función al hacer clic -->
+    <button onclick="procesarVerificacion()">Verificar</button>
+
+    <!-- Párrafo para mostrar el resultado -->
+    <p id="resultado"></p>
+
+    <script>
+        function identificarTarjeta(numero) {
+            // Limpiamos la entrada eliminando espacios o guiones
+            const limpio = String(numero).replace(/\D/g, '');
+
+            // Visa: Empieza con 4
+            const esVisa = /^4[0-9]{12}(?:[0-9]{3})?(?:[0-9]{3})?$/.test(limpio);
+
+            // Mastercard: Empieza de 51 a 55, o de 2221 a 2720
+            const esMastercard = /^(?:5[1-5][0-9]{14}|2(?:2[2-9][0-9]{12}|[3-6][0-9]{13}|7[0-1][0-9]{13}|720[0-9]{12}))$/.test(limpio);
+
+            if (esVisa) {
+                return "Es una tarjeta Visa";
+            } else if (esMastercard) {
+                return "Es una tarjeta Mastercard";
+            } else {
+                return "No es Visa ni Mastercard (o número incompleto)";
+            }
+        }
+
+        function procesarVerificacion() {
+            // Obtenemos el texto ingresado en el input
+            const inputNumero = document.getElementById("numeroTarjeta").value;
+            
+            // Evaluamos el número
+            const respuesta = identificarTarjeta(inputNumero);
+            
+            // Mostramos el resultado en el <p id="resultado">
+            document.getElementById("resultado").innerText = respuesta;
+        }
+    </script>
+</body>
+</html>
